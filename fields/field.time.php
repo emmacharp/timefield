@@ -2,8 +2,8 @@
 
 	Class fieldTime extends Field{
 
-		function __construct(&$parent){
-			parent::__construct($parent);
+		function __construct(){
+			parent::__construct();
 			$this->_name = 'Time';
 			$this->_required = true;
 			$this->set('required', 'yes');
@@ -30,15 +30,12 @@
 		}
 
 		public function buildSortingSQL(&$joins, &$where, &$sort, $order='ASC', $useIDFieldForSorting=false){
-
 			$sort_field = (!$useIDFieldForSorting ? 'ed' : 't' . $this->get('id'));
-
 			$joins .= "INNER JOIN `tbl_entries_data_".$this->get('id')."` AS `$sort_field` ON (`e`.`id` = `$sort_field`.`entry_id`) ";
 			$sort .= (strtolower($order) == 'random' ? 'RAND()' : "`$sort_field`.`seconds` $order");
 		}
 
 		function groupRecords($records){
-
 			if(!is_array($records) || empty($records)) return;
 
 			$groups = array($this->get('element_name') => array());
@@ -73,7 +70,6 @@
 		}
 
 		public function prepareTableValue($data, XMLElement $link=NULL){
-
 			$value = $data['value'];
 
 			if($link){
@@ -81,8 +77,7 @@
 				return $link->generate();
 			}
 
-			else return $value;
-
+			return $value;
 		}
 
 		function displayPublishPanel(&$wrapper, $data=NULL, $flagWithError=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
@@ -102,7 +97,7 @@
 			$label->appendChild(Widget::Input('fields[filter]'.($fieldnamePrefix ? '['.$fieldnamePrefix.']' : '').'['.$this->get('id').']'.($fieldnamePostfix ? '['.$fieldnamePostfix.']' : ''), ($data ? General::sanitize($data) : NULL)));
 			$wrapper->appendChild($label);
 
-			$wrapper->appendChild(new XMLElement('p', 'To filter by ranges, use the format <code>HH:MM:SS to HH:MM:SS</code>', array('class' => 'help')));
+			$wrapper->appendChild(new XMLElement('p', __('To filter by ranges, use the format <code>HH:MM:SS to HH:MM:SS</code>'), array('class' => 'help')));
 
 		}
 
@@ -110,12 +105,12 @@
 			$message = NULL;
 
 			if($this->get('required') == 'yes' && strlen($data) == 0){
-				$message = "This is a required field.";
+				$message = __('This is a required field');
 				return self::__MISSING_FIELDS__;
 			}
 
 			if(!preg_match('@^\d{1,2}:\d{1,2}(:\d+)?@', $data)){
-				$message = "Time must be entered in the format <code>HH:MM:SS</code>";
+				$message = __('Time must be entered in the format <code>HH:MM:SS</code>');
 				return self::__INVALID_FIELDS__;
 			}
 
@@ -138,7 +133,6 @@
 		}
 
 		public function processRawFieldData($data, &$status, $simulate=false, $entry_id=NULL){
-
 			$status = self::__OK__;
 
 			return array(
@@ -156,12 +150,10 @@
 			$hours = floor(($int * (1/60)) * (1/60));
 			$minutes = floor(($int - ($hours * 3600)) * (1/60));
 			$seconds = $int - (($hours * 3600) + ($minutes * 60));
-
 			return array($hours, $minutes, $seconds);
 		}
 
 		public static function timeIntToString($int){
-
 			list($hours, $minutes, $seconds) = self::parseTimeInt($int);
 
 			$hours = max(0, (int)$hours);
@@ -171,7 +163,7 @@
 			return "$hours:".($minutes < 10 ? '0' : NULL)."$minutes:" . ($seconds < 10 ? '0' : NULL) . $seconds;
 		}
 
-		function buildDSRetrivalSQL($data, &$joins, &$where, $andOperation=false){
+		function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation=false){
 
 			## Check its not a regexp
 			if(preg_match('/\bto\b/i', $data[0])){
@@ -190,15 +182,13 @@
 				$where .= " AND (t$field_id.`value` > $from_sec AND t$field_id.`value` < $to_sec) ";
 
 			}
-
-			else{
+			else {
 				$data[0] = self::timeStringToInt($data[0]);
-				parent::buildDSRetrivalSQL($data, $joins, $where, $andOperation);
+				parent::buildDSRetrievalSQL($data, $joins, $where, $andOperation);
 			}
 
 			return true;
 
 		}
-
 
 	}
