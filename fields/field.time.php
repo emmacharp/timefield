@@ -92,13 +92,9 @@
 		}
 
 		public function displayDatasourceFilterPanel(&$wrapper, $data=NULL, $errors=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
-			$wrapper->appendChild(new XMLElement('h4', $this->get('label') . ' <i>'.$this->Name().'</i>'));
-			$label = Widget::Label('Value');
-			$label->appendChild(Widget::Input('fields[filter]'.($fieldnamePrefix ? '['.$fieldnamePrefix.']' : '').'['.$this->get('id').']'.($fieldnamePostfix ? '['.$fieldnamePostfix.']' : ''), ($data ? General::sanitize($data) : NULL)));
-			$wrapper->appendChild($label);
-
-			$wrapper->appendChild(new XMLElement('p', __('To filter by ranges, use the format <code>HH:MM:SS to HH:MM:SS</code>'), array('class' => 'help')));
-
+			parent::displayDatasourceFilterPanel($wrapper, $data, $errors, $fieldnamePrefix, $fieldnamePostfix);
+			$text = new XMLElement('p', new XMLElement('p', __('To filter by ranges, use the format <code>HH:MM:SS to HH:MM:SS</code>'), array('class' => 'help')));
+			$wrapper->appendChild($text);
 		}
 
 		public function checkPostFieldData($data, &$message, $entry_id=NULL){
