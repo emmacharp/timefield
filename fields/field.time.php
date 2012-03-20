@@ -160,11 +160,10 @@
 		}
 
 		function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation=false){
-
+			$field_id = $this->get('id');
+			
 			## Check its not a regexp
 			if(preg_match('/\bto\b/i', $data[0])){
-
-				$field_id = $this->get('id');
 
 				list($from, $to) = preg_split('/\bto\b/i', $data[0]);
 
@@ -179,8 +178,9 @@
 
 			}
 			else {
-				$data[0] = self::timeStringToInt($data[0]);
-				parent::buildDSRetrievalSQL($data, $joins, $where, $andOperation);
+				$sec = self::timeStringToInt($data[0]);
+				$joins .= " LEFT JOIN `tbl_entries_data_$field_id` AS `t$field_id` ON (`e`.`id` = `t$field_id`.entry_id) ";
+				$where .= " AND (t$field_id.`seconds` = $sec) ";
 			}
 
 			return true;
