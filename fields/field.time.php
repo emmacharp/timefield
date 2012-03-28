@@ -29,10 +29,13 @@
 			return true;
 		}
 
-		public function buildSortingSQL(&$joins, &$where, &$sort, $order='ASC', $useIDFieldForSorting=false){
-			$sort_field = (!$useIDFieldForSorting ? 'ed' : 't' . $this->get('id'));
-			$joins .= "INNER JOIN `tbl_entries_data_".$this->get('id')."` AS `$sort_field` ON (`e`.`id` = `$sort_field`.`entry_id`) ";
-			$sort .= (strtolower($order) == 'random' ? 'RAND()' : "`$sort_field`.`seconds` $order");
+		public function buildSortingSQL(&$joins, &$where, &$sort, $order='ASC'){
+			if(in_array(strtolower($order), array('random', 'rand'))) {
+				$sort = 'ORDER BY RAND()';
+			} else {
+				$joins .= "LEFT OUTER JOIN `tbl_entries_data_".$this->get('id')."` AS `ed` ON (`e`.`id` = `ed`.`entry_id`) ";
+				$sort .= "ORDER BY `ed`.`seconds` $order";
+			}
 		}
 
 		function groupRecords($records){
