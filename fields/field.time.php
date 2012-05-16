@@ -131,7 +131,7 @@
 			);
 		}
 
-		public function processRawFieldData($data, &$status, $simulate=false, $entry_id=NULL){
+		public function processRawFieldData($data, &$status, &$message=null, $simulate = false, $entry_id = null){
 			$status = self::__OK__;
 
 			return array(
