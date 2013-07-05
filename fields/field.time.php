@@ -110,7 +110,7 @@
 				return self::__MISSING_FIELDS__;
 			}
 
-			if(!preg_match('@^\d{1,2}:\d{1,2}(:\d+)?@', $data)){
+			if(!preg_match('@^\d{1,2}:\d{1,2}(:\d+)?@', $data) && strlen($data) > 0){
 				$message = __('Time must be entered in the format <code>HH:MM:SS</code>');
 				return self::__INVALID_FIELDS__;
 			}
