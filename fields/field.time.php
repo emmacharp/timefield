@@ -114,7 +114,7 @@
 				$message = __('Time must be entered in the format <code>HH:MM:SS</code>');
 				return self::__INVALID_FIELDS__;
 			}
-
+			
 			return self::__OK__;
 		}
 
@@ -136,10 +136,12 @@
 		public function processRawFieldData($data, &$status, &$message=null, $simulate = false, $entry_id = null){
 			$status = self::__OK__;
 
-			return array(
-				'seconds' => self::timeStringToInt($data),
-				'value' => self::timeIntToString(self::timeStringToInt($data)),
-			);
+			if(strlen($data) > 0){
+				return array(
+					'seconds' => self::timeStringToInt($data),
+					'value' => self::timeIntToString(self::timeStringToInt($data)),
+				);
+			}
 		}
 
 		public static function timeStringToInt($string){
