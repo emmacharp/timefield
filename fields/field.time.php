@@ -86,11 +86,13 @@
 		}
 
 		function displayPublishPanel(&$wrapper, $data=NULL, $flagWithError=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
-			$value = (int)$data['seconds'];
+				$value = (int)$data['seconds'];
 
 			$label = Widget::Label($this->get('label'));
 			if($this->get('required') != 'yes') $label->appendChild(new XMLElement('i', 'Optional'));
-			$label->appendChild(Widget::Input('fields'.$fieldnamePrefix.'['.$this->get('element_name').']'.$fieldnamePostfix, self::timeIntToString($value)));
+			$label->appendChild(Widget::Input('fields'.$fieldnamePrefix.'['.$this->get('element_name').']'.$fieldnamePostfix, (strlen($data['value']) != 0 ? self::timeIntToString($value) : NULL)));
+
+
 
 			if($flagWithError != NULL) $wrapper->appendChild(Widget::wrapFormElementWithError($label, $flagWithError));
 			else $wrapper->appendChild($label);
@@ -110,11 +112,11 @@
 				return self::__MISSING_FIELDS__;
 			}
 
-			if(!preg_match('@^\d{1,2}:\d{1,2}(:\d+)?@', $data)){
+			if(!preg_match('@^\d{1,2}:\d{1,2}(:\d+)?@', $data) && strlen($data) > 0){
 				$message = __('Time must be entered in the format <code>HH:MM:SS</code>');
 				return self::__INVALID_FIELDS__;
 			}
-
+			
 			return self::__OK__;
 		}
 
@@ -136,10 +138,12 @@
 		public function processRawFieldData($data, &$status, &$message=null, $simulate = false, $entry_id = null){
 			$status = self::__OK__;
 
-			return array(
-				'seconds' => self::timeStringToInt($data),
-				'value' => self::timeIntToString(self::timeStringToInt($data)),
-			);
+			if(strlen($data) > 0){
+				return array(
+					'seconds' => self::timeStringToInt($data),
+					'value' => self::timeIntToString(self::timeStringToInt($data)),
+				);
+			}
 		}
 
 		public static function timeStringToInt($string){
