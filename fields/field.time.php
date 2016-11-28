@@ -94,7 +94,7 @@
 
 
 
-			if($flagWithError != NULL) $wrapper->appendChild(Widget::wrapFormElementWithError($label, $flagWithError));
+			if($flagWithError != NULL) $wrapper->appendChild(Widget::Error($label, $flagWithError));
 			else $wrapper->appendChild($label);
 		}
 
@@ -116,7 +116,7 @@
 				$message = __('Time must be entered in the format <code>HH:MM:SS</code>');
 				return self::__INVALID_FIELDS__;
 			}
-			
+
 			return self::__OK__;
 		}
 
@@ -170,7 +170,7 @@
 
 		function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation=false){
 			$field_id = $this->get('id');
-			
+
 			## Check its not a regexp
 			if(preg_match('/\bto\b/i', $data[0])){
 
