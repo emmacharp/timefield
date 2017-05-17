@@ -67,7 +67,7 @@
 			return $groups;
 		}
 
-		function displaySettingsPanel(XMLElement &$wrapper, $data = NULL, $flagWithError = NULL, $fieldnamePrefix = NULL, $fieldnamePostfix = NULL, $entry_id = NULL){
+		function displaySettingsPanel(XMLElement &$wrapper, $errors=NULL){
 			parent::displaySettingsPanel($wrapper, $errors);
 			$div =  new XMLElement('div', NULL, array('class' => 'two columns'));
 			$this->appendRequiredCheckbox($div);
@@ -81,7 +81,7 @@
 			$wrapper->appendChild($element);
 		}
 
-		public function prepareTableValue($data, XMLElement $link = NULL, $entry_id = NULL){
+		public function prepareTableValue($data, XMLElement $link=NULL, $entry_id = NULL){
 			$value = $data['value'];
 
 			if($link){
@@ -105,7 +105,7 @@
 			else $wrapper->appendChild($label);
 		}
 
-		public function displayDatasourceFilterPanel(XMLElement &$wrapper, $data = NULL, $errors = NULL, $fieldnamePrefix = NULL, $fieldnamePostfix = NULL){
+		public function displayDatasourceFilterPanel(XMLElement &$wrapper, $data=NULL, $errors=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
 			parent::displayDatasourceFilterPanel($wrapper, $data, $errors, $fieldnamePrefix, $fieldnamePostfix);
 			$text = new XMLElement('p', new XMLElement('p', __('To filter by ranges, use the format <code>HH:MM:SS to HH:MM:SS</code>'), array('class' => 'help')));
 			$wrapper->appendChild($text);
