@@ -14,6 +14,10 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="3.0.0" date="2017-08-25" min="2.6.x" max="4.x.x" php-min="5.6.x" php-max="7.x.x">
+			- Update for Symphony 4.x
+			- PHP7 Compatibility
+		</release>
 		<release version="2.0.4" date="2017-08-10" min="2.6.0" max="2.x.x">
 			- Fix typo
 		</release>
