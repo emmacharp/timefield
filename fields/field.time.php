@@ -29,6 +29,13 @@
 			return true;
 		}
 
+		function commit(){
+			if(!parent::commit()) return false;
+			$id = $this->get('id');
+			if($id == false) return false;
+			return FieldManager::saveSettings($id, array());
+		}
+
 		public function buildSortingSQL(&$joins, &$where, &$sort, $order='ASC'){
 			if(in_array(strtolower($order), array('random', 'rand'))) {
 				$sort = 'ORDER BY RAND()';
