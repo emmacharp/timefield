@@ -14,6 +14,9 @@
 		</author>
 	</authors>
 	<releases>
+		<release version="2.0.4" date="2017-08-10" min="2.6.0" max="2.x.x">
+			- Fix typo
+		</release>
 		<release version="2.0.3" date="2017-08-10" min="2.6.0" max="2.x.x">
 			- PHP7 compatibility
 		</release>
