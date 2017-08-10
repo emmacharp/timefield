@@ -67,7 +67,7 @@
 			return $groups;
 		}
 
-		function displaySettingsPanel(&$wrapper, $errors=NULL){
+		function displaySettingsPanel(XMLElement &$wrapper, $data = NULL, $flagWithError = NULL, $fieldnamePrefix = NULL, $fieldnamePostfix = NULL, $entry_id = NULL){
 			parent::displaySettingsPanel($wrapper, $errors);
 			$div =  new XMLElement('div', NULL, array('class' => 'two columns'));
 			$this->appendRequiredCheckbox($div);
@@ -75,13 +75,13 @@
 			$wrapper->appendChild($div);
 		}
 
-		public function appendFormattedElement(&$wrapper, $data, $encode=false){
+		public function appendFormattedElement(XMLElement &$wrapper, $data, $encode = false, $mode = NULL, $entry_id = NULL){
 			$element = new XMLElement($this->get('element_name'), $data['value']);
 			$element->setAttribute('seconds', (int)$data['seconds']);
 			$wrapper->appendChild($element);
 		}
 
-		public function prepareTableValue($data, XMLElement $link=NULL){
+		public function prepareTableValue($data, ?XMLElement $link = NULL, $entry_id = NULL){
 			$value = $data['value'];
 
 			if($link){
@@ -92,7 +92,7 @@
 			return $value;
 		}
 
-		function displayPublishPanel(&$wrapper, $data=NULL, $flagWithError=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
+		function displayPublishPanel(XMLElement &$wrapper, $data = NULL, $flagWithError = NULL, $fieldnamePrefix = NULL, $fieldnamePostfix = NULL, $entry_id = NULL){
 				$value = (int)$data['seconds'];
 
 			$label = Widget::Label($this->get('label'));
@@ -105,7 +105,7 @@
 			else $wrapper->appendChild($label);
 		}
 
-		public function displayDatasourceFilterPanel(&$wrapper, $data=NULL, $errors=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
+		public function displayDatasourceFilterPanel(XMLElement &$wrapper, $data = NULL, $errors = NULL, $fieldnamePrefix = NULL, $fieldnamePostfix = NULL){
 			parent::displayDatasourceFilterPanel($wrapper, $data, $errors, $fieldnamePrefix, $fieldnamePostfix);
 			$text = new XMLElement('p', new XMLElement('p', __('To filter by ranges, use the format <code>HH:MM:SS to HH:MM:SS</code>'), array('class' => 'help')));
 			$wrapper->appendChild($text);
