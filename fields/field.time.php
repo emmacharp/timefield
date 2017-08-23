@@ -67,7 +67,7 @@
 			return $groups;
 		}
 
-		function displaySettingsPanel(XMLElement &$wrapper, $errors=NULL){
+		function displaySettingsPanel(XMLElement &$wrapper, $errors=null){
 			parent::displaySettingsPanel($wrapper, $errors);
 			$div =  new XMLElement('div', NULL, array('class' => 'two columns'));
 			$this->appendRequiredCheckbox($div);
