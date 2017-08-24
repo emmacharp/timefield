@@ -36,7 +36,7 @@
 			return FieldManager::saveSettings($id, array());
 		}
 
-		public function buildSortingSQL(&$joins, &$where, &$sort, $order='ASC'){
+		public function buildSortingSQL(&$joins, &$where, &$sort, $order = 'ASC'){
 			if(in_array(strtolower($order), array('random', 'rand'))) {
 				$sort = 'ORDER BY RAND()';
 			} else {
@@ -67,21 +67,21 @@
 			return $groups;
 		}
 
-		function displaySettingsPanel(XMLElement &$wrapper, $errors=null){
+		function displaySettingsPanel(XMLElement &$wrapper, $errors = null){
 			parent::displaySettingsPanel($wrapper, $errors);
-			$div =  new XMLElement('div', NULL, array('class' => 'two columns'));
+			$div =  new XMLElement('div', null, array('class' => 'two columns'));
 			$this->appendRequiredCheckbox($div);
 			$this->appendShowColumnCheckbox($div);
 			$wrapper->appendChild($div);
 		}
 
-		public function appendFormattedElement(XMLElement &$wrapper, $data, $encode = false, $mode = NULL, $entry_id = NULL){
+		public function appendFormattedElement(XMLElement &$wrapper, $data, $encode = false, $mode = null, $entry_id = null){
 			$element = new XMLElement($this->get('element_name'), $data['value']);
 			$element->setAttribute('seconds', (int)$data['seconds']);
 			$wrapper->appendChild($element);
 		}
 
-		public function prepareTableValue($data, XMLElement $link=NULL, $entry_id = NULL){
+		public function prepareTableValue($data, XMLElement $link = null, $entry_id = null){
 			$value = $data['value'];
 
 			if($link){
@@ -92,27 +92,27 @@
 			return $value;
 		}
 
-		function displayPublishPanel(XMLElement &$wrapper, $data = NULL, $flagWithError = NULL, $fieldnamePrefix = NULL, $fieldnamePostfix = NULL, $entry_id = NULL){
+		function displayPublishPanel(XMLElement &$wrapper, $data = null, $flagWithError = null, $fieldnamePrefix = null, $fieldnamePostfix = null, $entry_id = null){
 				$value = (int)$data['seconds'];
 
 			$label = Widget::Label($this->get('label'));
 			if($this->get('required') != 'yes') $label->appendChild(new XMLElement('i', 'Optional'));
-			$label->appendChild(Widget::Input('fields'.$fieldnamePrefix.'['.$this->get('element_name').']'.$fieldnamePostfix, (strlen($data['value']) != 0 ? self::timeIntToString($value) : NULL)));
+			$label->appendChild(Widget::Input('fields'.$fieldnamePrefix.'['.$this->get('element_name').']'.$fieldnamePostfix, (strlen($data['value']) != 0 ? self::timeIntToString($value) : null)));
 
 
 
-			if($flagWithError != NULL) $wrapper->appendChild(Widget::Error($label, $flagWithError));
+			if($flagWithError != null) $wrapper->appendChild(Widget::Error($label, $flagWithError));
 			else $wrapper->appendChild($label);
 		}
 
-		public function displayDatasourceFilterPanel(XMLElement &$wrapper, $data=NULL, $errors=NULL, $fieldnamePrefix=NULL, $fieldnamePostfix=NULL){
+		public function displayDatasourceFilterPanel(XMLElement &$wrapper, $data = null, $errors = null, $fieldnamePrefix = null, $fieldnamePostfix = null){
 			parent::displayDatasourceFilterPanel($wrapper, $data, $errors, $fieldnamePrefix, $fieldnamePostfix);
 			$text = new XMLElement('p', new XMLElement('p', __('To filter by ranges, use the format <code>HH:MM:SS to HH:MM:SS</code>'), array('class' => 'help')));
 			$wrapper->appendChild($text);
 		}
 
-		public function checkPostFieldData($data, &$message, $entry_id=NULL){
-			$message = NULL;
+		public function checkPostFieldData($data, &$message, $entry_id = null){
+			$message = null;
 
 			if($this->get('required') == 'yes' && strlen($data) == 0){
 				$message = __('This is a required field');
@@ -131,10 +131,10 @@
 
 			return Symphony::Database()->query(
 				"CREATE TABLE IF NOT EXISTS `tbl_entries_data_" . $this->get('id') . "` (
-				  `id` int(11) unsigned NOT NULL auto_increment,
-				  `entry_id` int(11) unsigned NOT NULL,
-				  `seconds` bigint(20) default NULL,
-				  `value` varchar(20) default NULL,
+				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+				  `entry_id` INT(11) UNSIGNED NOT NULL,
+				  `seconds` BIGINT(20) DEFAULT NULL,
+				  `value` VARCHAR(20) DEFAULT NULL,
 				  PRIMARY KEY  (`id`),
 				  KEY `entry_id` (`entry_id`),
 				  KEY `seconds` (`seconds`)
@@ -142,7 +142,7 @@
 			);
 		}
 
-		public function processRawFieldData($data, &$status, &$message=null, $simulate = false, $entry_id = null){
+		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null){
 			$status = self::__OK__;
 
 			if(strlen($data) > 0){
@@ -172,10 +172,10 @@
 			$minutes = max(0, (int)$minutes);
 			$seconds = max(0, (int)$seconds);
 
-			return "$hours:".($minutes < 10 ? '0' : NULL)."$minutes:" . ($seconds < 10 ? '0' : NULL) . $seconds;
+			return "$hours:".($minutes < 10 ? '0' : null)."$minutes:" . ($seconds < 10 ? '0' : null) . $seconds;
 		}
 
-		function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation=false){
+		function buildDSRetrievalSQL($data, &$joins, &$where, $andOperation = false){
 			$field_id = $this->get('id');
 
 			## Check its not a regexp
