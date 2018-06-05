@@ -128,18 +128,31 @@
 		}
 
 		public function createTable(){
-
-			return Symphony::Database()->query(
-				"CREATE TABLE IF NOT EXISTS `tbl_entries_data_" . $this->get('id') . "` (
-				  `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
-				  `entry_id` INT(11) UNSIGNED NOT NULL,
-				  `seconds` BIGINT(20) DEFAULT NULL,
-				  `value` VARCHAR(20) DEFAULT NULL,
-				  PRIMARY KEY  (`id`),
-				  KEY `entry_id` (`entry_id`),
-				  KEY `seconds` (`seconds`)
-				) TYPE=MyISAM;"
-			);
+			return Symphony::Database()
+				->create('tbl_entries_data_' . $this->get('id'))
+				->ifNotExists()
+				->fields([
+					'id' => [
+						'type' => 'int(11)',
+						'auto' => true,
+					],
+					'entry_id' => 'int(11)',
+					'seconds' => [
+						'type' => 'bigint(20)',
+						'null' => true,
+					],
+					'value' => [
+						'type' => 'varchar(20)',
+						'null' => true,
+					],
+				])
+				->keys([
+					'id' => 'primary',
+					'entry_id' => 'key',
+					'seconds' => 'key',
+				])
+				->execute()
+				->success();
 		}
 
 		public function processRawFieldData($data, &$status, &$message = null, $simulate = false, $entry_id = null){
