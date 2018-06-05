@@ -1,9 +1,12 @@
 <?php
+	require_once EXTENSIONS . '/timefield/lib/class.entryquerytimeadapter.php';
 
 	Class fieldTime extends Field{
 
 		function __construct(){
 			parent::__construct();
+			$this->entryQueryFieldAdapter = new EntryQueryTimeAdapter($this);
+
 			$this->_name = 'Time';
 			$this->_required = true;
 			$this->set('required', 'yes');
